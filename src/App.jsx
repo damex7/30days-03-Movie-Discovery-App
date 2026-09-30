@@ -3,6 +3,7 @@ import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import SearchPage from './pages/SearchPage'
 import MovieDetailPage from './pages/MovieDetailPage'
+import WatchlistPage from './pages/WatchlistPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
         <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="movie/:id" element={<MovieDetailPage />} />
+        <Route path="watchlist" element={<WatchlistPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

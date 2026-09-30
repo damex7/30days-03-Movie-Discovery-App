@@ -5,6 +5,7 @@ import { usePagedMovies } from '../hooks/usePagedMovies'
 import { searchMovies } from '../lib/tmdb'
 import PagedMovieList from '../components/PagedMovieList'
 import EmptyState from '../components/EmptyState'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 /*
   The URL (?q=...) is the single source of truth for WHAT is searched.
@@ -18,6 +19,7 @@ import EmptyState from '../components/EmptyState'
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const query = (searchParams.get('q') ?? '').trim()
+  useDocumentTitle(query ? `Search: ${query}` : 'Search')
 
   const [text, setText] = useState(query)
   const debounced = useDebounce(text.trim(), 400)

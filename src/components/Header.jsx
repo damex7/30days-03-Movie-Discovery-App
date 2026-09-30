@@ -40,12 +40,18 @@ export default function Header() {
             </li>
             <li>
               <NavLink to="/watchlist" className={navClass}>
-                {/* The visible count is also read out as part of the link name. */}
                 Watchlist
                 {watchlistCount > 0 && (
-                  <span className="ml-1 inline-grid min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] leading-5 text-on-accent">
-                    {watchlistCount}
-                  </span>
+                  <>
+                    {/* Visual badge is hidden; screen readers hear "Watchlist, 3 saved". */}
+                    <span
+                      aria-hidden="true"
+                      className="ml-1 inline-grid min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] leading-5 text-on-accent"
+                    >
+                      {watchlistCount}
+                    </span>
+                    <span className="sr-only">, {watchlistCount} saved</span>
+                  </>
                 )}
               </NavLink>
             </li>

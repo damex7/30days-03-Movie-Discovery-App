@@ -7,9 +7,11 @@ import GenreFilter from '../components/GenreFilter'
 import PagedMovieList from '../components/PagedMovieList'
 import ErrorState from '../components/ErrorState'
 import EmptyState from '../components/EmptyState'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { RowSkeleton } from '../components/Skeletons'
 
 export default function HomePage() {
+  useDocumentTitle(null)
   const [searchParams, setSearchParams] = useSearchParams()
   // URL values are always strings; Number('') is 0, so `|| null` means "no genre".
   const genreId = Number(searchParams.get('genre')) || null
