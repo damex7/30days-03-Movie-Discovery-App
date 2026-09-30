@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/*
+  Design tokens. Every value here becomes a CSS variable (e.g. --color-paper)
+  AND a Tailwind utility (bg-paper, text-ink, border-line, font-display...).
+  The look: a printed film-festival programme / ticket stub.
+*/
+@theme {
+  --color-paper: #f4eee3; /* page background: warm newsprint */
+  --color-card: #fbf8f2; /* raised surfaces */
+  --color-ink: #1c1917; /* main text */
+  --color-ink-soft: #57504a; /* secondary text (7:1 on paper) */
+  --color-line: #d9cfbf; /* hairlines and borders */
+  --color-accent: #c8402a; /* vermilion: buttons, focus, highlights */
+  --color-on-accent: #ffffff; /* text placed on top of accent */
+  --color-teal: #1f6f6b; /* secondary accent: rating stamp, links */
+  --color-skeleton: #e6dccb;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --font-sans: "Fraunces", Georgia, serif;
+
+  --animate-shimmer: shimmer 1.4s ease-in-out infinite;
+
+  @keyframes shimmer {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+}
+
+/*
+  Dark mode: redefine the same variables. Because utilities read the
+  variables, no component needs a single `dark:` class. It stays warm
+  (espresso brown), not the usual pure-black streaming look.
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #1b1714;
+    --color-card: #25201c;
+    --color-ink: #f1e9dc;
+    --color-ink-soft: #b5aa9b;
+    --color-line: #3d3530;
+    --color-accent: #f0694f;
+    --color-on-accent: #1b1714;
+    --color-teal: #6cc0b6;
+    --color-skeleton: #332c27;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-paper text-ink font-display antialiased;
+    /* faint paper grain made from two gradients: no image request needed */
+    background-image:
+      radial-gradient(color-mix(in srgb, var(--color-ink) 4%, transparent) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  /* One visible, consistent focus ring for every interactive element. */
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* The perforated edge along the top of a ticket-stub card. */
+  .perforated {
+    position: relative;
+  }
+  .perforated::before {
+    content: "";
+    position: absolute;
+    inset: -1px 10px auto;
+    height: 6px;
+    background: radial-gradient(circle at 5px -1px, var(--color-paper) 3.5px, transparent 4px) 0 0 / 12px 6px repeat-x;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Diagonal "film leader" stripes used by the missing-poster placeholder. */
+  .film-leader {
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        color-mix(in srgb, var(--color-accent) 14%, transparent) 0 10px,
+        transparent 10px 20px
+      ),
+      var(--color-card);
+  }
+
+  /* Hide the horizontal scrollbar on the trending row but keep it scrollable. */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
