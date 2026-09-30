@@ -13,11 +13,15 @@ const initialState = { items: [], totalPages: 0, status: 'loading', error: null 
     [query],
   )
 
+  Pass { enabled: false } to skip fetching entirely (e.g. search with an
+  empty box: rendering a message instead isn't enough, the hook would still
+  send a request with no query). status is then 'idle'.
+
   Why a separate hook? useFetch REPLACES its data on every request. Load
   more needs to APPEND page 2 to page 1, and to reset back to page 1 when
   the query or genre changes. Same AbortController pattern underneath.
 */
-export function usePagedMovies(fetchPage, deps = []) {
+export function usePagedMovies(fetchPage, deps = [], { enabled = true } = {}) {
   const [page, setPage] = useState(1)
   const [state, setState] = useState(initialState)
   const [attempt, setAttempt] = useState(0)
@@ -35,6 +39,7 @@ export function usePagedMovies(fetchPage, deps = []) {
   }
 
   useEffect(() => {
+    if (!enabled) return
     const controller = new AbortController()
     setState((s) => ({ ...s, status: 'loading', error: null }))
 
@@ -55,9 +60,13 @@ export function usePagedMovies(fetchPage, deps = []) {
       })
 
     return () => controller.abort()
-  }, [depsKey, page, attempt])
+  }, [depsKey, page, attempt, enabled])
 
   const lastPage = Math.min(state.totalPages, TMDB_MAX_PAGE)
+
+  if (!enabled) {
+    return { ...initialState, status: 'idle', page: 1, hasMore: false, isFirstLoad: false, loadMore() {}, retry() {} }
+  }
 
   return {
     ...state,
