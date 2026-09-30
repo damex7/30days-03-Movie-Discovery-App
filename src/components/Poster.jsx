@@ -21,9 +21,9 @@ export default function Poster({ path, title, size = 'w342', className = '', eag
         aria-label={`No poster available for ${title}`}
         className={`film-leader flex aspect-[2/3] flex-col justify-between overflow-hidden rounded border border-line p-3 ${className}`}
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">No poster</span>
-        <span className="line-clamp-4 text-lg leading-tight font-semibold break-words">{title}</span>
         <span aria-hidden="true" className="font-mono text-2xl text-accent">✶</span>
+        <span className="line-clamp-4 text-lg leading-tight font-semibold break-words">{title}</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">No poster</span>
       </div>
     )
   }

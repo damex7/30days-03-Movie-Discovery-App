@@ -3,13 +3,21 @@
   immediately. `compact` is used under an existing list (a failed "Load more")
   so the movies already on screen stay visible.
 */
-export default function ErrorState({ error, onRetry, title = 'Something went wrong', compact = false }) {
+export default function ErrorState({
+  error,
+  onRetry,
+  title = 'Something went wrong',
+  compact = false,
+  compactLabel = 'Couldn’t load more',
+}) {
   const message = error?.message ?? 'The request failed. Check your connection and try again.'
 
   if (compact) {
     return (
       <div role="alert" className="flex flex-wrap items-center justify-center gap-3 font-mono text-sm">
-        <span className="text-accent">Couldn’t load more: {message}</span>
+        <span className="text-accent">
+          {compactLabel}: {message}
+        </span>
         {onRetry && (
           <button type="button" onClick={onRetry} className="underline underline-offset-4 hover:text-accent">
             Retry
