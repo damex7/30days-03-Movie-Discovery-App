@@ -11,10 +11,13 @@ import { formatRating, releaseYear } from '../lib/tmdb'
 export default function MovieCard({ movie }) {
   const year = releaseYear(movie)
   const rating = formatRating(movie.vote_average)
+  // Without this, the link's name is built from everything inside it:
+  // "Poster for Dune, Rated 8.1 out of 10, Dune, 2021" (title said twice).
+  const linkLabel = [movie.title, year, rating && `rated ${rating} out of 10`].filter(Boolean).join(', ')
 
   return (
     <article className="perforated group relative h-full rounded-lg border border-line bg-card p-2 transition hover:-translate-y-0.5 hover:border-ink hover:shadow-[4px_4px_0_var(--color-ink)]">
-      <Link to={`/movie/${movie.id}`} className="block rounded">
+      <Link to={`/movie/${movie.id}`} aria-label={linkLabel} className="block rounded">
         <div className="relative">
           <Poster path={movie.poster_path} title={movie.title} />
           {rating && (
